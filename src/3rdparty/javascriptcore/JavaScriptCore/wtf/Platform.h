@@ -167,6 +167,13 @@
 #define WTF_CPU_BIG_ENDIAN 1
 #endif
 
+/* CPU(MIPS64) - Mips 64-bit */
+#if   defined(__mips__) \
+    && defined(_ABI64)
+#define WTF_CPU_MIPS64 1
+#define WTF_CPU_BIG_ENDIAN 1
+#endif
+
 /* CPU(SH4) - SuperH SH-4 */
 #if defined(__SH4__)
 #define WTF_CPU_SH4 1

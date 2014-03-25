@@ -147,8 +147,12 @@
 /* CPU(MIPS) - MIPS 32-bit */
 /* Note: Only O32 ABI is tested, so we enable it for O32 ABI for now.  */
 #if (defined(mips) || defined(__mips__) || defined(MIPS) || defined(_MIPS_)) \
-    && defined(_ABIO32)
+    && (defined(_ABIO32) || defined(_ABI64))
+#ifdef _ABI64
+#define WTF_CPU_MIPS64 1
+#else
 #define WTF_CPU_MIPS 1
+#endif
 #if defined(__MIPSEB__)
 #define WTF_CPU_BIG_ENDIAN 1
 #endif
@@ -1007,6 +1011,7 @@
     || CPU(SPARC64) \
     || CPU(S390X) \
     || CPU(PPC64) \
+    || CPU(MIPS64) \
     || CPU(AARCH64)
 #define WTF_USE_JSVALUE64 1
 #else

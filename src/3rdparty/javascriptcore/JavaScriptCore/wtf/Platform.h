@@ -167,12 +167,19 @@
 #define WTF_CPU_BIG_ENDIAN 1
 #endif
 
-/* CPU(MIPS64) - Mips 64-bit */
-#if   defined(__mips__) \
-    && defined(_ABI64)
+/* CPU(MIPS) - Mips 32-bit
+   CPU(MIPS64) - Mips 64-bit */
+#if (defined(mips) || defined(__mips__) || defined(MIPS) || defined(_MIPS_)) \
+    && (defined(_ABIO32) || defined(_ABI64))
+#if defined(_ABI64) && !defined(_ABIO32)
 #define WTF_CPU_MIPS64 1
+#else
+#define WTF_CPU_MIPS 1
+#endif
+#if defined(__MIPSEB__)
 #define WTF_CPU_BIG_ENDIAN 1
 #endif
+#endif /* MIPS */
 
 /* CPU(SH4) - SuperH SH-4 */
 #if defined(__SH4__)
@@ -912,7 +919,7 @@
 #if !defined(WTF_USE_JSVALUE64) && !defined(WTF_USE_JSVALUE32) && !defined(WTF_USE_JSVALUE32_64)
 #if (CPU(X86_64) && (OS(UNIX) || OS(WINDOWS) || OS(SOLARIS) || OS(HPUX))) || (CPU(IA64) && !CPU(IA64_32)) || CPU(ALPHA) || CPU(AIX64) || CPU(SPARC64) || CPU(AARCH64) || CPU(MIPS64)
 #define WTF_USE_JSVALUE64 1
-#elif CPU(ARM) || CPU(PPC64)
+#elif CPU(ARM) || CPU(PPC64) || CPU(MIPS)
 #define WTF_USE_JSVALUE32 1
 #elif OS(WINDOWS) && COMPILER(MINGW)
 /* Using JSVALUE32_64 causes padding/alignement issues for JITStubArg

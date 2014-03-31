@@ -216,6 +216,17 @@
 #if   defined(__x86_64__) \
     || defined(_M_X64)
 #define WTF_CPU_X86_64 1
+#ifdef __ILP32__
+#define WTF_CPU_X86_X32 1
+#undef ENABLE_ASSEMBLER
+#undef ENABLE_JIT
+#undef ENABLE_YARR
+#undef ENABLE_YARR_JIT
+#define ENABLE_ASSEMBLER 0
+#define ENABLE_JIT 0
+#define ENABLE_YARR 0
+#define ENABLE_YARR_JIT 0
+#endif
 #endif
 
 /* 64-bit mode on AIX */
@@ -895,7 +906,7 @@
 #endif
 
 #if !defined(WTF_USE_JSVALUE64) && !defined(WTF_USE_JSVALUE32) && !defined(WTF_USE_JSVALUE32_64)
-#if (CPU(X86_64) && (OS(UNIX) || OS(WINDOWS) || OS(SOLARIS) || OS(HPUX))) || (CPU(IA64) && !CPU(IA64_32)) || CPU(ALPHA) || CPU(AIX64) || CPU(SPARC64) || CPU(AARCH64) || CPU(MIPS64)
+#if ((CPU(X86_64) && !CPU(X86_X32)) && (OS(UNIX) || OS(WINDOWS) || OS(SOLARIS) || OS(HPUX))) || (CPU(IA64) && !CPU(IA64_32)) || CPU(ALPHA) || CPU(AIX64) || CPU(SPARC64) || CPU(AARCH64) || CPU(MIPS64)
 #define WTF_USE_JSVALUE64 1
 #elif CPU(ARM) || CPU(PPC64) || CPU(MIPS)
 #define WTF_USE_JSVALUE32 1

@@ -233,6 +233,17 @@
 /* CPU(X86_64) - AMD64 / Intel64 / x86_64 64-bit */
 #if   defined(__x86_64__) \
     || defined(_M_X64)
+#ifdef __ILP32__
+#define WTF_CPU_X86_X32 1
+#undef ENABLE_ASSEMBLER
+#undef ENABLE_JIT
+#undef ENABLE_YARR
+#undef ENABLE_YARR_JIT
+#define ENABLE_ASSEMBLER 0
+#define ENABLE_JIT 0
+#define ENABLE_YARR 0
+#define ENABLE_YARR_JIT 0
+#endif
 #define WTF_CPU_X86_64 1
 #endif
 
@@ -1005,7 +1016,7 @@
 #endif
 
 #if !defined(WTF_USE_JSVALUE64) && !defined(WTF_USE_JSVALUE32_64)
-#if (CPU(X86_64) && (OS(UNIX) || OS(WINDOWS))) \
+#if ((CPU(X86_64) && !CPU(X86_X32)) && (OS(UNIX) || OS(WINDOWS))) \
     || (CPU(IA64) && !CPU(IA64_32)) \
     || CPU(ALPHA) \
     || CPU(SPARC64) \
